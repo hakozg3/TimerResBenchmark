@@ -24,7 +24,8 @@ jobs:
           run: |
             apk update
             apk add --no-cache clang llvm make git gcc musl-dev elfutils-dev linux-headers
-            make CC=clang
+            git config --global --add safe.directory /work
+            make CC=clang GOFLAGS="-buildvcs=false"
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
