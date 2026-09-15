@@ -1,0 +1,35 @@
+name: Build dae latest
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target code
+        uses: actions/checkout@v4
+        with:
+          repository: 'olicesx/dae'
+          ref: 'latest'
+          submodules: 'recursive'
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang llvm libelf-dev
+
+      - name: Build dae
+        run: |
+          make CC=clang
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: dae-linux-x86_64
+          path: dae
