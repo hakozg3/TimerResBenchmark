@@ -28,7 +28,7 @@ jobs:
 
       - name: Build dae
         run: |
-          make CC=clang
+          make CC=clang CGO_ENABLED=0
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
