@@ -16,19 +16,14 @@ jobs:
           ref: 'latest'
           submodules: 'recursive'
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - name: Build dae in Alpine (musl native)
+        uses: addnab/docker-run-action@v3
         with:
-          go-version: 'stable'
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang llvm libelf-dev
-
-      - name: Build dae
-        run: |
-          make CC=clang CGO_ENABLED=0
+          image: golang:alpine
+          options: -v ${{ github.workspace }}:/work -w /work
+          run: |
+            apk add --no-cache clang llvm llvm-static make git gcc musl-dev libelf-dev linux-headers
+            make CC=clang
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
