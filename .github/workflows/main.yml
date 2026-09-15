@@ -22,7 +22,8 @@ jobs:
           image: golang:alpine
           options: -v ${{ github.workspace }}:/work -w /work
           run: |
-            apk add --no-cache clang llvm llvm-static make git gcc musl-dev libelf-dev linux-headers
+            apk update
+            apk add --no-cache clang llvm make git gcc musl-dev elfutils-dev linux-headers
             make CC=clang
 
       - name: Upload binary
