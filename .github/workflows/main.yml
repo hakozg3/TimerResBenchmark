@@ -2,6 +2,8 @@ name: Build dae latest
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '15 22 * * *'
 
 jobs:
   build:
